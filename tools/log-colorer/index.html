@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Log Colorer - Goblin's Toolbox</title>
+<link rel="stylesheet" href="../../shared/theme.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="app-header" id="appHeader" style="display:none;">
+  <div class="app-title">
+    <a href="../../index.html" class="back-link">&larr; Toolbox</a>
+    LOG COLORER <span>/ rest</span>
+  </div>
+  <div class="controls">
+    <input type="text" class="filter-input" id="filterInput" placeholder="Filter by endpoint, user, IP...">
+    <div class="method-filters" id="methodFilters"></div>
+    <button class="toggle-btn active" id="hideOptionsBtn">Hide OPTIONS</button>
+    <button class="clear-btn" id="clearBtn">Clear</button>
+    <button class="theme-btn" id="themeBtn">Light</button>
+  </div>
+  <div class="stats" id="stats"></div>
+</header>
+
+<div class="paste-area" id="pasteArea">
+  <div class="paste-zone" id="pasteZone">
+    <h2>Paste REST API Logs</h2>
+    <p>Paste JSON log lines below. Each line should be a JSON object from your rest.log.</p>
+    <textarea class="paste-textarea" id="logInput" placeholder='{"timestamp":"...","request_method":"GET","endpoint":"/api/v1/...","response_status":"200",...}'></textarea>
+    <br>
+    <button class="parse-btn" id="parseBtn">Parse & Display</button>
+  </div>
+</div>
+
+<div class="log-container" id="logContainer">
+  <div class="log-list" id="logList"></div>
+</div>
+
+<script src="../../shared/theme.js"></script>
+<script src="parser.js"></script>
+<script src="ui.js"></script>
+<script>
+  Theme.init();
+  LogColorerUI.init();
+</script>
+</body>
+</html>
