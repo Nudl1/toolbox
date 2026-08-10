@@ -1,0 +1,69 @@
+:root, [data-theme="dark"] {
+  --bg: #0d1117;
+  --bg-surface: #161b22;
+  --bg-row-hover: #1c2333;
+  --bg-expanded: #1c2128;
+  --border: #30363d;
+  --text-primary: #e6edf3;
+  --text-secondary: #8b949e;
+  --text-muted: #484f58;
+  --accent: #58a6ff;
+  --scrollbar-track: #161b22;
+  --scrollbar-thumb: #30363d;
+}
+
+[data-theme="light"] {
+  --bg: #ffffff;
+  --bg-surface: #f6f8fa;
+  --bg-row-hover: #f0f3f6;
+  --bg-expanded: #f6f8fa;
+  --border: #d1d9e0;
+  --text-primary: #1f2328;
+  --text-secondary: #59636e;
+  --text-muted: #8b949e;
+  --accent: #0969da;
+  --scrollbar-track: #f6f8fa;
+  --scrollbar-thumb: #d1d9e0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'JetBrains Mono', Consolas, monospace;
+  background: var(--bg);
+  color: var(--text-primary);
+  min-height: 100vh;
+}
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--scrollbar-track); }
+::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 4px; }
+
+.theme-btn {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.theme-btn:hover {
+  border-color: var(--text-secondary);
+  color: var(--text-primary);
+}
+
+.back-link {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 12px;
+  transition: color 0.15s;
+}
+
+.back-link:hover {
+  color: var(--text-primary);
+}
