@@ -6,22 +6,67 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
+const VALID_METHODS = new Set(["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD"]);
+
 function parseLogLines(raw) {
+  if (!raw || !raw.trim()) {
+    return { entries: [], raws: [], errors: [{ line: 0, text: "", error: "Input is empty" }] };
+  }
+
   const lines = raw.split("\n");
   const entries = [];
   const raws = [];
-  for (const line of lines) {
-    const trimmed = line.trim();
-    if (!trimmed || !trimmed.startsWith("{")) continue;
+  const errors = [];
+
+  for (let i = 0; i < lines.length; i++) {
+    const trimmed = lines[i].trim();
+    if (!trimmed) continue;
+
+    if (!trimmed.startsWith("{")) {
+      errors.push({ line: i + 1, text: trimmed, error: "Not a JSON object (must start with \"{\")" });
+      continue;
+    }
+
+    let obj;
     try {
-      const obj = JSON.parse(trimmed);
-      if (obj.timestamp && obj.request_method && obj.endpoint) {
-        entries.push(obj);
-        raws.push(trimmed);
+      obj = JSON.parse(trimmed);
+    } catch (e) {
+      errors.push({ line: i + 1, text: trimmed, error: "Invalid JSON: " + e.message });
+      continue;
+    }
+
+    if (typeof obj !== "object" || Array.isArray(obj)) {
+      errors.push({ line: i + 1, text: trimmed, error: "Expected a JSON object, got " + (Array.isArray(obj) ? "array" : typeof obj) });
+      continue;
+    }
+
+    const missing = [];
+    if (!obj.timestamp) missing.push("timestamp");
+    if (!obj.request_method) missing.push("request_method");
+    if (!obj.endpoint) missing.push("endpoint");
+    if (missing.length > 0) {
+      errors.push({ line: i + 1, text: trimmed, error: "Missing required field" + (missing.length > 1 ? "s" : "") + ": " + missing.join(", ") });
+      continue;
+    }
+
+    if (!VALID_METHODS.has(obj.request_method.toUpperCase())) {
+      errors.push({ line: i + 1, text: trimmed, error: "Unknown HTTP method: \"" + obj.request_method + "\"" });
+      continue;
+    }
+
+    if (obj.response_status !== undefined) {
+      const code = parseInt(obj.response_status, 10);
+      if (isNaN(code) || code < 100 || code > 599) {
+        errors.push({ line: i + 1, text: trimmed, error: "Invalid status code: \"" + obj.response_status + "\" (expected 100–599)" });
+        continue;
       }
-    } catch (_) {}
+    }
+
+    entries.push(obj);
+    raws.push(trimmed);
   }
-  return { entries, raws };
+
+  return { entries, raws, errors };
 }
 
 function getStatusClass(status) {

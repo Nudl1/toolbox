@@ -409,6 +409,69 @@
 
 .clear-btn:hover { border-color: var(--method-delete); color: var(--method-delete); }
 
+.paste-back {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 12px;
+}
+
+.parse-errors {
+  text-align: left;
+  margin-top: 16px;
+  border: 1px solid var(--status-4xx);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.parse-errors-heading {
+  background: var(--bg-surface);
+  padding: 10px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--status-4xx);
+  border-bottom: 1px solid var(--border);
+}
+
+.parse-errors-list {
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.parse-error-row {
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--border);
+  font-size: 11px;
+}
+
+.parse-error-row:last-child { border-bottom: none; }
+
+.parse-error-location {
+  color: var(--text-muted);
+}
+
+.parse-error-message {
+  color: var(--status-4xx);
+}
+
+.parse-error-preview {
+  color: var(--text-muted);
+  margin-top: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 10px;
+}
+
+.error-banner {
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+  padding: 8px 20px;
+  font-size: 11px;
+  color: var(--status-4xx);
+  cursor: default;
+}
+
 @media (max-width: 900px) {
   .log-ip, .log-user { display: none; }
   .details-grid { grid-template-columns: 1fr; }

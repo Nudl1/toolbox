@@ -27,6 +27,14 @@ const LogColorerUI = {
   parse() {
     const raw = document.getElementById("logInput").value;
     const result = parseLogLines(raw);
+
+    this.clearErrors();
+
+    if (result.errors.length > 0 && result.entries.length === 0) {
+      this.showErrors(result.errors);
+      return;
+    }
+
     if (result.entries.length === 0) return;
 
     this.allLogs = result.entries;
@@ -36,11 +44,65 @@ const LogColorerUI = {
     document.getElementById("logContainer").classList.add("visible");
     this.buildMethodFilters();
     this.renderLogs();
+
+    if (result.errors.length > 0) {
+      this.showErrorBanner(result.errors);
+    }
+  },
+
+  clearErrors() {
+    const existing = document.getElementById("parseErrors");
+    if (existing) existing.remove();
+    const banner = document.getElementById("errorBanner");
+    if (banner) banner.remove();
+  },
+
+  showErrors(errors) {
+    const container = document.createElement("div");
+    container.id = "parseErrors";
+    container.className = "parse-errors";
+
+    const heading = document.createElement("div");
+    heading.className = "parse-errors-heading";
+    heading.textContent = errors.length + " error" + (errors.length > 1 ? "s" : "") + " — no valid log entries found";
+    container.appendChild(heading);
+
+    const list = document.createElement("div");
+    list.className = "parse-errors-list";
+    for (const err of errors) {
+      const row = document.createElement("div");
+      row.className = "parse-error-row";
+      const lineLabel = err.line > 0 ? "Line " + err.line + ": " : "";
+      row.innerHTML =
+        '<span class="parse-error-location">' + escapeHtml(lineLabel) + '</span>' +
+        '<span class="parse-error-message">' + escapeHtml(err.error) + '</span>';
+      if (err.text) {
+        const preview = document.createElement("div");
+        preview.className = "parse-error-preview";
+        preview.textContent = err.text.length > 120 ? err.text.substring(0, 120) + "…" : err.text;
+        row.appendChild(preview);
+      }
+      list.appendChild(row);
+    }
+    container.appendChild(list);
+
+    const zone = document.getElementById("pasteZone");
+    zone.appendChild(container);
+  },
+
+  showErrorBanner(errors) {
+    const banner = document.createElement("div");
+    banner.id = "errorBanner";
+    banner.className = "error-banner";
+    banner.textContent = errors.length + " line" + (errors.length > 1 ? "s" : "") + " skipped due to errors";
+    banner.title = errors.map(function(e) { return "Line " + e.line + ": " + e.error; }).join("\n");
+    document.getElementById("logContainer").prepend(banner);
   },
 
   clear() {
     this.allLogs = [];
     this.rawLines = [];
+    this.clearErrors();
     document.getElementById("logContainer").classList.remove("visible");
     document.getElementById("appHeader").style.display = "none";
     document.getElementById("pasteArea").style.display = "flex";
