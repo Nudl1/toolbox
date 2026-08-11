@@ -83,7 +83,9 @@ function render(owner) {
       tocItems += '<li data-env="' + r.envAttr + '" data-title="' + esc(rows[ri].title.toLowerCase()) + '">' +
         '<a href="#' + r.tid + '">' + esc(rows[ri].title) + '</a></li>';
     }
-    tocParts.push('<li class="toc-group"><span class="toc-folder">' + esc(fname) +
+    tocParts.push('<li class="toc-group"><span class="toc-folder">' +
+      '<svg class="toc-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3l5 5-5 5"/></svg>' +
+      esc(fname) +
       '<span class="toc-count">' + rows.length + '</span></span><ul>' + tocItems + '</ul></li>');
     contentParts.push('<section class="folder" id="' + fid + '"><h2 class="folder-title">' +
       '<span class="folder-count">' + rows.length + '</span>' + esc(fname) + '</h2>' + cards + '</section>');
@@ -92,6 +94,13 @@ function render(owner) {
   document.getElementById("aside").innerHTML =
     '<p class="toc-title">Contents</p><ul>' + tocParts.join("") + '</ul>';
   document.getElementById("content").innerHTML = contentParts.join("");
+
+  var tocFolders = document.querySelectorAll("#aside .toc-folder");
+  for (var ci = 0; ci < tocFolders.length; ci++) {
+    tocFolders[ci].addEventListener("click", function() {
+      this.parentNode.classList.toggle("collapsed");
+    });
+  }
 
   var withSteps = 0, nAT = 0, nSI = 0;
   for (var si = 0; si < subset.length; si++) {
