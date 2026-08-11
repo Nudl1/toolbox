@@ -141,10 +141,14 @@ function renderTest(t) {
 
   return { tid: tid, envAttr: envAttr, html:
     '<article class="test" id="' + tid + '" data-env="' + envAttr + '" data-title="' + esc(t.title.toLowerCase()) + '">' +
-      '<header class="test-head"><div class="test-heading">' +
-        '<span class="test-id">' + esc(idline) + '</span><h3>' + esc(t.title) + '</h3></div>' +
+      '<header class="test-head">' +
+        '<div class="test-heading-row">' +
+          '<label class="test-check" title="Mark as done"><input type="checkbox" class="check-box" data-tid="' + tid + '" aria-label="Mark test case as done"></label>' +
+          '<div class="test-heading">' +
+            '<span class="test-id">' + esc(idline) + '</span><h3>' + esc(t.title) + '</h3></div>' +
+        '</div>' +
         '<div class="chips">' + chips + '</div></header>' +
-      descHtml + preHtml + stepsHtml +
+      '<div class="test-body">' + descHtml + preHtml + stepsHtml + '</div>' +
     '</article>'
   };
 }

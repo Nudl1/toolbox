@@ -80,7 +80,8 @@ function render(owner) {
     for (var ri = 0; ri < rows.length; ri++) {
       var r = renderTest(rows[ri]);
       cards += r.html;
-      tocItems += '<li data-env="' + r.envAttr + '" data-title="' + esc(rows[ri].title.toLowerCase()) + '">' +
+      tocItems += '<li data-env="' + r.envAttr + '" data-title="' + esc(rows[ri].title.toLowerCase()) + '" data-tid="' + r.tid + '">' +
+        '<label class="toc-check" title="Mark as done"><input type="checkbox" class="check-box" data-tid="' + r.tid + '" aria-label="Mark test case as done"></label>' +
         '<a href="#' + r.tid + '">' + esc(rows[ri].title) + '</a></li>';
     }
     tocParts.push('<li class="toc-group"><span class="toc-folder">' +
@@ -127,6 +128,21 @@ function render(owner) {
 
   resetFilters();
   applyFilters();
+}
+
+function cssId(id) {
+  return (window.CSS && CSS.escape) ? CSS.escape(id) : id.replace(/([^a-zA-Z0-9_-])/g, "\\$1");
+}
+
+function setDone(tid, checked) {
+  if (!tid) return;
+  var sel = '[data-tid="' + cssId(tid) + '"]';
+  var boxes = document.querySelectorAll("input.check-box" + sel);
+  for (var i = 0; i < boxes.length; i++) boxes[i].checked = checked;
+  var test = document.getElementById(tid);
+  if (test) test.classList.toggle("done", checked);
+  var li = document.querySelector("li" + sel);
+  if (li) li.classList.toggle("done", checked);
 }
 
 function handleFile(file) {
@@ -196,6 +212,11 @@ function handleFile(file) {
 
   document.getElementById("owner").addEventListener("change", function(e) { render(e.target.value); });
   document.getElementById("search").addEventListener("input", applyFilters);
+
+  document.addEventListener("change", function(e) {
+    if (!e.target.classList || !e.target.classList.contains("check-box")) return;
+    setDone(e.target.dataset.tid, e.target.checked);
+  });
 
   var filterBtns = document.querySelectorAll(".filters button");
   for (var i = 0; i < filterBtns.length; i++) {

@@ -272,13 +272,32 @@ aside ul { list-style: none; margin: 0; padding: 0; }
 
 .toc-group > ul { margin: 4px 0 0; border-left: 1px solid var(--line); }
 
-.toc-group li a {
-  display: block; padding: 3px 0 3px 12px;
-  color: var(--ink-soft); text-decoration: none; font-size: 12.5px;
-  border-left: 2px solid transparent; margin-left: -1px;
+.toc-group li {
+  display: flex; align-items: center; gap: 6px;
+  padding-left: 11px; margin-left: -1px;
+  border-left: 2px solid transparent;
 }
 
-.toc-group li a:hover { color: var(--accent); border-left-color: var(--accent); }
+.toc-group li:hover,
+.toc-group li:focus-within { border-left-color: var(--accent); }
+
+.toc-group li:hover a,
+.toc-group li:focus-within a { color: var(--accent); }
+
+.toc-check { display: flex; align-items: center; flex-shrink: 0; }
+
+.toc-check input.check-box {
+  width: 12px; height: 12px; margin: 0; cursor: pointer;
+  accent-color: var(--accent);
+}
+
+.toc-group li a {
+  display: block; padding: 3px 0; flex: 1; min-width: 0;
+  color: var(--ink-soft); text-decoration: none; font-size: 12.5px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+.toc-group li.done a { text-decoration: line-through; opacity: 0.55; }
 
 /* folders + tests */
 .folder { margin-bottom: 44px; }
@@ -307,11 +326,25 @@ aside ul { list-style: none; margin: 0; padding: 0; }
   flex-wrap: wrap; margin-bottom: 6px;
 }
 
+.test-heading-row { display: flex; align-items: flex-start; gap: 10px; min-width: 0; }
+
+.test-check { display: flex; align-items: center; padding-top: 5px; flex-shrink: 0; }
+
+.test-check input.check-box {
+  width: 16px; height: 16px; margin: 0; cursor: pointer;
+  accent-color: var(--accent);
+}
+
 .test-id { font-size: 11px; color: var(--ink-soft); letter-spacing: 0.02em; }
 
 .test h3 { font-size: 17px; font-weight: 600; margin: 3px 0 0; }
 
 .chips { display: flex; gap: 6px; flex-wrap: wrap; }
+
+.test.done { background: var(--line-soft); }
+.test.done .test-heading h3 { text-decoration: line-through; color: var(--ink-soft); }
+.test.done .chips { opacity: 0.5; }
+.test.done .test-body { display: none; }
 
 .chip {
   display: inline-flex; align-items: center; gap: 5px;
