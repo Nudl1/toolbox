@@ -15,3 +15,4 @@ A collection of browser-based tools that run locally.
 ## Tools
 
 - **REST Log Colorer** — Paste JSON API logs, get color-coded, filterable, expandable output.
+- **Testmo Viewer** — Drop a Testmo run export (.xlsx/.csv), get grouped test cases with step tables, env filters, and assignee picker.
