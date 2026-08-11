@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Testmo Viewer - Toolbox</title>
+<link rel="stylesheet" href="../../shared/theme.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="appbar">
+  <a href="../../index.html" class="back-link">&larr; Toolbox</a>
+  <span class="brand">Testmo Viewer</span>
+  <span class="spacer"></span>
+  <span class="owner-wrap" id="ownerWrap">
+    <label for="owner">Assigned to</label>
+    <select id="owner"></select>
+  </span>
+  <button class="btn" id="loadBtn">Load file</button>
+  <button class="theme-btn" id="themeBtn"></button>
+  <input id="file" type="file" accept=".xlsx,.xls,.csv" hidden>
+</header>
+<div class="err" id="err"></div>
+
+<section class="landing" id="landing">
+  <h1>Turn a Testmo export into a readable spec</h1>
+  <p>Drop a Testmo <strong>.xlsx</strong> or <strong>.csv</strong> run export below. It's parsed entirely in your browser — nothing is uploaded — and rendered as grouped test cases with each step paired to its expected result.</p>
+  <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Choose a file">
+    <svg class="dz-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0L8 8m4-4 4 4"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg>
+    <div class="dz-main">Drop your export here, or click to browse</div>
+    <div class="dz-sub">.xlsx, .xls or .csv — the raw Testmo run export</div>
+  </div>
+  <p class="hint">Expects the standard Testmo columns: <code>Assigned to</code>, <code>Folder</code>, <code>Test</code>, <code>Tags</code>, <code>Steps (Step)</code>, <code>Steps (Expected)</code>.</p>
+</section>
+
+<div class="statsbar" id="statsbar"></div>
+
+<div class="wrap" id="wrap">
+  <aside id="aside"></aside>
+  <main>
+    <div class="controls">
+      <input id="search" type="search" placeholder="Search test cases by name..." aria-label="Search test cases">
+      <div class="filters" role="group" aria-label="Filter by environment">
+        <button data-env="all" aria-pressed="true">All</button>
+        <button data-env="AT" aria-pressed="false">AT &middot; 100</button>
+        <button data-env="SI" aria-pressed="false">SI &middot; 111</button>
+        <button data-env="other" aria-pressed="false">Other MVNO</button>
+      </div>
+    </div>
+    <div id="empty" class="empty-msg">No test cases match your filters.</div>
+    <div id="content"></div>
+  </main>
+</div>
+
+<script src="xlsx.full.min.js"></script>
+<script src="../../shared/theme.js"></script>
+<script src="parser.js"></script>
+<script src="ui.js"></script>
+<script>Theme.init();</script>
+</body>
+</html>
