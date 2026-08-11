@@ -248,13 +248,26 @@ aside ul { list-style: none; margin: 0; padding: 0; }
 .toc-group { margin-bottom: 14px; }
 
 .toc-folder {
-  display: flex; justify-content: space-between; align-items: center;
+  display: flex; align-items: center; gap: 4px;
   font-weight: 600; font-size: 12.5px; color: var(--ink); padding: 2px 0;
+  cursor: pointer; user-select: none; border-radius: 4px;
 }
+
+.toc-folder:hover { background: var(--line-soft); }
+
+.toc-chevron {
+  width: 14px; height: 14px; flex-shrink: 0;
+  color: var(--ink-soft); transition: transform 0.15s ease;
+  transform: rotate(90deg);
+}
+
+.toc-group.collapsed .toc-chevron { transform: rotate(0deg); }
+.toc-group.collapsed > ul { display: none; }
 
 .toc-count {
   font-size: 10px; font-weight: 600; color: var(--ink-soft);
   background: var(--line-soft); border-radius: 6px; padding: 3px 6px;
+  margin-left: auto;
 }
 
 .toc-group > ul { margin: 4px 0 0; border-left: 1px solid var(--line); }
